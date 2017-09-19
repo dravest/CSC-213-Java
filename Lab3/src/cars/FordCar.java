@@ -1,33 +1,36 @@
 package cars;
-
+/**
+ * 
+ * Name: Thomas Draves
+ * Date: 9-19-2017
+ * Class: CSC 213L
+ * 
+ * Description: Takes all of the methods from the CoolCars class and
+ * overrides them to put new returns in for the FordCar
+ *
+ */
 public class FordCar extends CoolCar
 {
-	@Override
 	public String getBrand()
 	{
 		return "Ford";
 	}
-	@Override
 	public String getModel()
 	{
 		return "Mustang";
 	}
-	@Override
 	public int getModelYear()
 	{
 		return 1968;
 	}
-	@Override
 	public int getMileage()
 	{
 		return 72500;
 	}
-	@Override
 	public double getFuelLevel()
 	{
 		return 0.5;
 	}
-	@Override
 	public boolean hasProblems()
 	{
 		return false;
