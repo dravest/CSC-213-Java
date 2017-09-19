@@ -1,5 +1,15 @@
 package animals;
-
+/**
+ * 
+ * Name: Thomas Draves
+ * Date: 9-19-2017
+ * Class: CSC 213L
+ * 
+ * Description: Takes the Lion class and implements the methods inside it, 
+ * LionImpl cause the methods to have print statements. 
+ * Also adds in some new methods.
+ *
+ */
 public class LionImpl implements Lion
 {
 	public void eat()
