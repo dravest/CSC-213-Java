@@ -6,18 +6,21 @@ public class SearchCmd
 {
 	private String fileName;
 	private String searchTerm;
-	File name = new File(fileName);
-	String term = searchTerm;
+	File name = null;
+	String term = "";
+	FileReader fread = null;
+	BufferedReader bread = null;
 	
 	public SearchCmd(String s2, String s3)
 	{
 		fileName = s2;
 		searchTerm = s3;
+		name = new File(fileName);
+		term = searchTerm;
 	}
 	public boolean validateInputFile()
 	{
-		boolean isDirectory = name.isDirectory();
-		if (isDirectory == true)
+		if (name.exists()== false || name.isDirectory() == true)
 		{
 			return false;
 		}
@@ -27,43 +30,63 @@ public class SearchCmd
 		}
 	}
 	
-	public boolean execute() throws Exception
+	public boolean execute()
 	{
-			FileInputStream fis = new FileInputStream(name);
-			boolean x = false;
+		try
+		{	
+			fread = new FileReader(name);
+			bread = new BufferedReader(fread);
+			String line = bread.readLine();
+			
+			while (line != null)
+			{
+				if (line.contains(term))
+				{
+					System.out.println("Found it!");
+					break;
+				}
+				else
+				{
+					line = bread.readLine();
+				}
+			}
+			
+			
+		}	
+		catch(IOException ioe)
+		{
+			ioe.printStackTrace( System.err );
+		}
+		
+		finally
+		{
 			try
 			{
-				int c = -1;
-				
-				while((c = fis.read())!= -1)
-				{
-					Scanner Scanner = new Scanner(fis);
-					while(Scanner.nextLine() != null)
-					{
-						String line = Scanner.nextLine();
-						if(line.equals(term))
-						{
-							System.out.println("Term found!");
-							x = true;
-						}
-					}
-				}
-			}
-			finally
+			if (fread != null)
 			{
-				if (fis != null)
-				{
-					fis.close();
-				}
+				fread.close();
 			}
-		if (x == true)
-		{
-			return true;
+			if (bread != null)
+			{
+				bread.close();
+			}
+			}
+			catch(IOException ioe)
+			{
+				
+			}
 		}
-		else 
+		return true;
+	}
+	public void main(String[] args)
+	{
+		if (validateInputFile() == true)
 		{
-			return false;
+			System.out.println("fuck this sit");
+		}
+		else
+		{
+			System.out.println("Fuck my life");
 		}
 	}
-			
-	}
+}
