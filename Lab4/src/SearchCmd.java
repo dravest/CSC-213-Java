@@ -20,13 +20,22 @@ public class SearchCmd
 	}
 	public boolean validateInputFile()
 	{
-		if (name.exists()== false || name.isDirectory() == true)
+		if (name.exists()== false)
 		{
+			System.out.println("ERROR: the file does not exist: " + name);
 			return false;
 		}
 		else
 		{
-			return true;
+			if (name.isDirectory() == true)
+			{
+				System.out.println("ERROR: this is not a file, it is a directory");
+				return false;
+			}
+			else
+			{
+				return true;
+			}
 		}
 	}
 	

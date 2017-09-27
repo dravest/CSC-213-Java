@@ -19,25 +19,35 @@ public class CopyCmd
 	}
 	public boolean validateInputFile()
 	{
-		if (copy.exists() == false|| copy.isDirectory() == true)
+		if (copy.exists() == false)
 		{
+			System.out.println("ERROR: the file does not exist: " + copy);
 			return false;
 		}
 		else
 		{
-			return true;
+			if (copy.isDirectory() == true)
+			{
+				System.out.println("ERROR: this is not a file, it is a directory");
+				return false;
+			}
+			else
+			{
+				return true;
+			}
 		}
 	}
 	public boolean validateOutputFile()
 	{
-		if (output.exists() == false || output.isDirectory() == true)
-		{
-			return false;
-		}
-		else
-		{
-			return true;
-		}
+			if (output.isDirectory() == true)
+			{
+				System.out.println("ERROR: this is not a file, it is a directory" + output);
+				return false;
+			}
+			else
+			{
+				return true;
+			}
 	}
 	public void execute()
 	{
