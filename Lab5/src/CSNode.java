@@ -1,38 +1,44 @@
-public class CSNode
+public class CSNode<E>
 {
-	private CSNode next;
-	private CSNode prev;
-	private Object storedObject;
+	public CSNode<E> next;
+	public CSNode<E> prev;
+	public E storedObject;
 	
-	public CSNode(CSNode next, CSNode prev, Object storedObject)
+	public CSNode()
 	{
 		this.next = null;
 		this.prev = null;
 		this.storedObject = null;
 	}
-	public CSNode getNode()
+	public CSNode(CSNode<E> next, CSNode<E> prev, E storedObject)
+	{
+		this.next = prev;
+		this.prev = next;
+		this.storedObject = storedObject;
+	}
+	public CSNode<E> getNext()
 	{
 		return this.next;
 	}
-	public CSNode setNode(CSNode next)
+	public CSNode<E> setNext(CSNode<E> next)
 	{
 		this.next = next;
 		return this.next;
 	}
-	public CSNode getPrev()
+	public CSNode<E> getPrev()
 	{
 		return this.prev;
 	}
-	public CSNode setPrev(CSNode prev)
+	public CSNode<E> setPrev(CSNode<E> prev)
 	{
 		this.prev = prev;
 		return this.prev;
 	}
-	public Object getElement()
+	public E getElement()
 	{
 		return this.storedObject;
 	}
-	public Object setElement(Object stroedObject)
+	public E setElement(E storedObject)
 	{
 		this.storedObject = storedObject;
 		return this.storedObject;
