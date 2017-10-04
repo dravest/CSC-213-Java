@@ -1,4 +1,3 @@
-import java.util.*;
 import java.util.Comparator;
 
 public class CSList<E> implements ICSList<E>
@@ -7,47 +6,50 @@ public class CSList<E> implements ICSList<E>
 	private CSNode<E> tail;
 	private int nodeCount;
 	
-	public CSList(CSNode head, CSNode tail, int nodeCount)
+	public CSList()
 	{
-		this.head = null;
-		this.tail = null;
 		nodeCount = 0;
+		this.tail = new CSNode<E>();
+		this.head = new CSNode<E>();
+		head.setNext(tail);
+		head.setPrev(null);
+		tail.setPrev(head);
+		tail.setNext(null);
 	}
 	public int size()
 	{
-		int count = 0;
-		CSNode<E> runner = head.next;
-		while (runner != null)
+		if (nodeCount < Integer.MAX_VALUE)
 		{
-			count ++;
-			runner = runner.next;
+			return nodeCount;
 		}
-		nodeCount = count;
-		return count;
+		else
+		{
+			return Integer.MAX_VALUE;
+		}
 	}
 	public boolean isEmpty()
 	{
-		if(head == null)
+		if(head.getNext() == tail)
 		{
 			return true;
 		}
 		else
 		{
-			return true;
+			return false;
 		}
 	}
 	public boolean contains( E o )
 	{
 		CSNode<E> runner = head;
-		while (runner != null)
+		while (runner.getNext() != null)
 		{
-			if (runner == o)
+			if (runner.getElement() == o)
 			{
 				return true;
 			}
 			else
 			{
-				runner = runner.next;
+				runner = runner.getNext();
 			}
 		}
 		return false;
@@ -56,152 +58,201 @@ public class CSList<E> implements ICSList<E>
 	{
 		CSNode<E> node = new CSNode<E>();
 		node.setElement(e);
-		CSNode<E> runner = tail.prev;
-		runner.next = node;
-		runner = node;
-		runner.next = tail;
+		
+		CSNode<E> runner = tail.getPrev();
+		node.setNext(tail);
+		tail.setPrev(node);
+		runner.setNext(node);
+		node.setPrev(runner);
+		nodeCount += 1;
 		return true;
 	}
 	public boolean remove(E o)
 	{
-		CSNode<E> runner = head;
-		while(runner.next != null)
+		CSNode<E> runner = head.getNext();
+		while(runner != tail)
 		{
-			if (runner == o)
+			if (runner.getElement() == o)
 			{
-				CSNode<E> temp = runner.prev;
-				temp.next = runner.next;
+				CSNode<E> temp = runner.getNext();
+				runner.setNext(temp);
+				runner = runner.getPrev();
+				temp.setPrev(runner);
 				return true;
 			}
 			else
 			{
-				runner = runner.next;
+				runner = runner.getNext();
 			}
 		}
 		return false;
 	}
 	public void clear()
 	{
-		head = null;
-		tail = null;
+		head.setNext(tail);
+		tail.setPrev(head);
+		nodeCount = 0;
 	}
-	public E get(int index)
+	public E get(int index)throws IndexOutOfBoundsException
 	{
-		if (index > nodeCount)
+		if (index > nodeCount | index < 0)
 		{
-			System.out.println("ERROR: the index is greater than the list size");
-			return null;
+			throw new IndexOutOfBoundsException();
 		}
-		int count = 0;
-		CSNode<E> runner = head.next;
-		while (runner != null)
+		int count = -1;
+		CSNode<E> runner = head.getNext();
+		while (runner != tail)
 		{
-			count ++;
+			count = count + 1;
 			if (count == index)
 			{
 				return runner.getElement();
 			}
 			else
 			{
-				runner = runner.next;
+				runner = runner.getNext();
 			}
 		}
 		return null;
 	}
 	public E set(int index, E element)throws IndexOutOfBoundsException
 	{
-		if (index > nodeCount)
+		if (index > nodeCount | index < 0)
 		{
 			throw new IndexOutOfBoundsException();
 		}
-		int count = 0;
-		CSNode<E> runner = head.next;
-		while (runner != null)
+		int count = -1;
+		CSNode<E> runner = head.getNext();
+		while (runner != tail)
 		{
-			count ++;
+			count += 1;
 			if (count == index)
 			{
 				E temp = runner.getElement();
-				E item = runner.setElement(element);
+				runner.setElement(element);
 				return temp;
 			}
 			else
 			{
-				runner = runner.next;
+				runner = runner.getNext();
 			}
 		}
 		return null;
 	}
 	public void add(int index, E element)throws IndexOutOfBoundsException
 	{
-		if (index > nodeCount)
+		if (index > nodeCount | index < 0)
 		{
 			throw new IndexOutOfBoundsException();
 		}
-		CSNode<E> node = new CSNode();
+		CSNode<E> node = new CSNode<E>();
 		node.setElement(element);
-		int count = 0;
+		int count = -1;
 		CSNode<E> runner = head;
-		while (runner.next != null)
+		while (runner.getNext() != null)
 		{
 			
-			count ++;
+			count += 1;
 			if (count == index)
 			{
-				CSNode<E> temp = runner.prev;
-				temp.next = node;
-				node.next = runner;
+				CSNode<E> temp = runner.getPrev();
+				temp.setNext(node);
+				node.setNext(runner);
 			}
 			else
 			{
-				runner = runner.next;
+				runner = runner.getNext();
 			}
 		}
 	}
 	public E remove(int index)throws IndexOutOfBoundsException
 	{
-		if (index > nodeCount)
+		if (index > nodeCount | index < 0)
 		{
 			throw new IndexOutOfBoundsException();
 		}
-		int count = 0;
-		CSNode<E> runner = head.next;
-		while (runner.next!= null)
+		int count = -1;
+		CSNode<E> runner = head.getNext();
+		while (runner.getNext()!= null)
 		{
-			count ++;
+			count += 1;
 			if (count == index)
 			{
-				CSNode<E> temp = runner.prev;
-				temp.next = runner.next;
+				CSNode<E> temp = runner.getPrev();
+				temp.setNext(runner.getNext());
 				return runner.getElement();
 			}
 			else
 			{
-				runner = runner.next;
+				runner = runner.getNext();
 			}
 		}
 		return null;
 	}
 	public int indexOf(E o)
 	{
-		int count = 0;
-		CSNode<E> runner = head.next;
+		int count = -1;
+		CSNode<E> runner = head.getNext();
 		while(runner.next != null)
 		{
-			count ++;
+			count += 1;
 			if (runner.getElement() == o)
 			{
 				return count;
 			}
 			else
 			{
-				runner = runner.next;
+				runner = runner.getNext();
 			}
 		}
 		return -1;
 	}
-	public void sort(Comparator<E> comparator)
+	public void sort(Comparator<E> comparator)throws NullPointerException
 	{
-		
+		CSNode<E> newHead = new CSNode<E>();
+		CSNode<E> newTail = new CSNode<E>();
+		newHead.setNext(newTail);
+		newTail.setPrev(newHead);
+		CSNode<E> runner = head.getNext();
+		while(runner != tail)
+		{
+			CSNode<E> temp = runner;
+			head.setNext(temp.getNext());
+			temp.setPrev(head.getNext());
+			CSNode<E> first = new CSNode<E>();
+			first.setElement(runner.getElement());
+			newHead.setNext(first);
+			first.setNext(newTail);
+			newTail.setPrev(first);
+			while(runner != tail )
+			{
+				CSNode<E> current = newTail.getPrev();
+				if (comparator.compare(current.getElement(), runner.getElement()) == 0)
+				{//equals
+					CSNode<E> node = new CSNode<E>();
+					node.setElement(runner.getElement());
+					node.setNext(current.getNext());
+					node.setPrev(current);
+					current.setNext(node);
+				}
+				else if (comparator.compare(current.getElement(), runner.getElement()) == 1)
+				{//greater than
+					CSNode<E> node = new CSNode<E>();
+					node.setElement(runner.getElement());
+					node.setPrev(current.getPrev());
+					node.setNext(current);
+					current.setPrev(node);
+				}
+				else if (comparator.compare(current.getElement(), runner.getElement()) == -1)
+				{//less than
+					CSNode<E> node = new CSNode<E>();
+					node.setElement(runner.getElement());
+					node.setNext(current.getNext());
+					node.setPrev(current);
+					current.setNext(node);
+				}
+				runner = runner.getNext();
+			}
+		}
 	}
 }
