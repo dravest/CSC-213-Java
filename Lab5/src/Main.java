@@ -92,14 +92,14 @@ public class Main
                 
                 if ( x1 > x2 )
                 {
-                    return -1;
+                    return 1;
                 }
                 else if ( x1 == x2 )
                 {
                     return 0;
                 }
                 
-                return 1;
+                return -1;
             }
         });
 		
@@ -133,7 +133,7 @@ public class Main
                 int x1 = o1.intValue();
                 int x2 = o2.intValue();
                 
-                if ( x1 < x2 )
+                if ( x1 > x2 )
                 {
                     return -1;
                 }
