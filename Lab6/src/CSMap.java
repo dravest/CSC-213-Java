@@ -32,27 +32,87 @@ public class CSMap<K, V> implements ICSMap<K, V>
     public V get( K key )
     {
         // TODO: add implementation
-        return null;
+    	if (key != null)
+    	{
+    		int bucketNum = getBucket(key);
+    		List<CSEntry<K, V>> keys = buckets.get(bucketNum);
+    		for (int i = 0; i < keys.size(); i++)
+    		{
+    			CSEntry<K,V> k = keys.get(i);
+    			if (containsKey(k.getKey()) == true)
+    			{
+    				V v = k.getValue();
+    				return v;
+    			}
+    		}
+    	}
+    	return null;
     }
 
     @Override
     public V put( K key, V value )
     {
         // TODO: add implementation
-        return null;
+    	int bucketNum = getBucket(key);
+    	List<CSEntry<K, V>> keys = buckets.get(bucketNum);
+    	for (int i = 0; i < keys.size(); i++)
+    	{
+    		CSEntry<K, V> k = keys.get(i);
+    		if (containsKey(k.getKey()) == true)
+    		{
+    			V prevVal = k.getValue();
+    			k.setValue(value);
+    			return prevVal;
+    		}
+    		else
+    		{
+    			k.setValue(value);
+    			return null;
+    		}
+    	}
+    	
+    	return null;
     }
 
     @Override
     public List<K> getKeys()
     {
         // TODO: add implementation
-        return null;
+    	List<K> keys = new ArrayList<K>();
+    	if (buckets.isEmpty() == true)
+    	{
+    		return null;
+    	}
+    	for (int i = 0; i < buckets.size(); i++)
+    	{
+    		List<CSEntry<K, V>> key = buckets.get(i);
+    		for (int j = 0; j < key.size(); j++)
+    		{
+    			CSEntry<K, V> Key = key.get(j);
+    			K Key2 = Key.getKey();
+    			if(Key2 == null)
+    			{
+    				keys.add(-1, Key2);
+    			}
+    		}
+    	}
+    	return keys;
     }
 
     @Override
     public boolean containsKey( K key )
     {
         // TODO: add implementation
+    	int bucketNum = getBucket(key);
+    	List<CSEntry<K, V>> keys = buckets.get(bucketNum);
+    	for (int i = 0; i < keys.size(); i++)
+    	{
+    		CSEntry<K, V> k = keys.get(i);
+    		if (k == key)
+    		{
+    			return true;
+    		}
+    	}
         return false;
     }
     
