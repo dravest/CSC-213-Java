@@ -105,6 +105,10 @@ public class CSMap<K, V> implements ICSMap<K, V>
         // TODO: add implementation
     	int bucketNum = getBucket(key);
     	List<CSEntry<K, V>> keys = buckets.get(bucketNum);
+    	if (keys.isEmpty() == true) 
+    	{
+    		return false;
+    	}
     	for (int i = 0; i < keys.size(); i++)
     	{
     		CSEntry<K, V> k = keys.get(i);
@@ -112,8 +116,12 @@ public class CSMap<K, V> implements ICSMap<K, V>
     		{
     			return true;
     		}
+    		else
+    		{
+    			return false;
+    		}
     	}
-        return false;
+    	return false;
     }
     
     /**
