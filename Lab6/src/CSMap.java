@@ -113,6 +113,9 @@ public class CSMap<K, V> implements ICSMap<K, V>
     		CSEntry<K, V> k = keys.get(i);
     		if (k.equals(key))
     		{
+    			V value = k.getValue();
+    			//value = value++;
+    			k.setValue(value);
     			return true;
     		}
     	}
