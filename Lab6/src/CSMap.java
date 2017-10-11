@@ -39,7 +39,8 @@ public class CSMap<K, V> implements ICSMap<K, V>
     		for (int i = 0; i < keys.size(); i++)
     		{
     			CSEntry<K,V> k = keys.get(i);
-    			if (containsKey(k.getKey()) == true)
+    			//System.out.println(k.getKey());
+    			if (key.equals(k.getKey()))
     			{
     				V v = k.getValue();
     				return v;
@@ -55,23 +56,25 @@ public class CSMap<K, V> implements ICSMap<K, V>
         // TODO: add implementation
     	int bucketNum = getBucket(key);
     	List<CSEntry<K, V>> keys = buckets.get(bucketNum);
-    	for (int i = 0; i < keys.size(); i++)
-    	{
-    		CSEntry<K, V> k = keys.get(i);
-    		if (containsKey(k.getKey()) == true)
+    	V prevVal = null;
+    		boolean found = false;
+    		for (int i = 0; i < keys.size(); i++)
     		{
-    			V prevVal = k.getValue();
-    			k.setValue(value);
-    			return prevVal;
+    			CSEntry<K, V> k = keys.get(i);  
+    			
+    			if (k.getKey().equals(key))
+    			{
+    				prevVal = k.setValue(value);
+    				found = true;
+    				break;
+    			}
     		}
-    		else
+    		if (found == false)
     		{
-    			k.setValue(value);
-    			return null;
+    			CSEntry<K, V> pair = new CSEntry<K, V>(key, value);
+    			keys.add(pair);
     		}
-    	}
-    	
-    	return null;
+    	return prevVal;
     }
 
     @Override
@@ -79,20 +82,20 @@ public class CSMap<K, V> implements ICSMap<K, V>
     {
         // TODO: add implementation
     	List<K> keys = new ArrayList<K>();
-    	if (buckets.isEmpty() == true)
-    	{
-    		return null;
-    	}
     	for (int i = 0; i < buckets.size(); i++)
     	{
     		List<CSEntry<K, V>> key = buckets.get(i);
+    		//if (key.isEmpty() == true)
+    		//{
+    		//	return keys;
+    		//}
     		for (int j = 0; j < key.size(); j++)
     		{
     			CSEntry<K, V> Key = key.get(j);
     			K Key2 = Key.getKey();
-    			if(Key2 == null)
+    			if(Key2 != null)
     			{
-    				keys.add(-1, Key2);
+    				keys.add((keys.size()), Key2);
     			}
     		}
     	}
@@ -105,20 +108,12 @@ public class CSMap<K, V> implements ICSMap<K, V>
         // TODO: add implementation
     	int bucketNum = getBucket(key);
     	List<CSEntry<K, V>> keys = buckets.get(bucketNum);
-    	if (keys.isEmpty() == true) 
-    	{
-    		return false;
-    	}
     	for (int i = 0; i < keys.size(); i++)
     	{
     		CSEntry<K, V> k = keys.get(i);
-    		if (k == key)
+    		if (k.equals(key))
     		{
     			return true;
-    		}
-    		else
-    		{
-    			return false;
     		}
     	}
     	return false;

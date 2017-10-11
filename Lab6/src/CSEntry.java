@@ -43,15 +43,15 @@ public class CSEntry<K, V>
      * Sets a new value to be associated with this {@link CSEntry} instance, and returns the
      * previously associated value.
      * 
-     * @param newValue The new value to associate with this {@link CSEntry} instance
+     * @param i The new value to associate with this {@link CSEntry} instance
      * 
      * @return The value previously associated with this {@link CSEntry} instance.
      */
-    public V setValue( V newValue )
+    public V setValue( V i )
     {
         V prevValue = value;
         
-        value = newValue;
+        value = i;
         
         return prevValue;
     }
